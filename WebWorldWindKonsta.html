@@ -1,39 +1,69 @@
-!DOCTYPE html>
+<!DOCTYPE html>
+
 <html>
-<head>
-	<title>WebWorldWindKonsta</title>
 <head lang="en">
 <meta charset="UTF-8">
-<title>WebWorldWindKonsta</title>
+<title>WorldWind Example</title>
+<!-- Include the Web WorldWind library. -->
 <script src="https://files.worldwind.arc.nasa.gov/artifactory/web/0.9.0/worldwind.min.js"
         type="text/javascript">
 </script>
 </head>
 <body>
 <div style="position: absolute; top: 50px; left: 50px;">
-    <!-- Create a canvas for Web WorldWind. -->
     <canvas id="canvasOne" width="1024" height="768">
         Your browser does not support HTML5 Canvas.
     </canvas>
 </div>
 <script>
-    // Register an event listener to be called when the page is loaded.
     window.addEventListener("load", eventWindowLoaded, false);
 
-    // Define the event listener to initialize Web WorldWind.
     function eventWindowLoaded() {
-        // Create a WorldWindow for the canvas.
         var wwd = new WorldWind.WorldWindow("canvasOne");
 
-        // Add some image layers to the WorldWindow's globe.
         wwd.addLayer(new WorldWind.BMNGOneImageLayer());
         wwd.addLayer(new WorldWind.BMNGLandsatLayer());
 
-        // Add a compass, a coordinates display and some view controls to the WorldWindow.
         wwd.addLayer(new WorldWind.CompassLayer());
         wwd.addLayer(new WorldWind.CoordinatesDisplayLayer(wwd));
         wwd.addLayer(new WorldWind.ViewControlsLayer(wwd));
-    }
+    
+package gov.nasa.worldwindx.examples;
+import gov.nasa.worldwind.WorldWind;
+import gov.nasa.worldwind.avlist.AVKey;
+import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.layers.RenderableLayer;
+import gov.nasa.worldwind.render.*;
+import gov.nasa.worldwind.util.WWUtil;
+
+import java.awt.*;
+
+public class Placemarks extends ApplicationTemplate
+{
+    public static class AppFrame extends ApplicationTemplate.AppFrame
+    {
+        public AppFrame()
+        {
+            super(true, true, false);
+
+            RenderableLayer layer = new RenderableLayer();
+
+            PointPlacemark pp = new PointPlacemark(Position.fromDegrees(28, -102, 1e4));
+            pp.setLabelText("Placemark A");
+            pp.setValue(AVKey.DISPLAY_NAME, "Clamp to ground, Label, Semi-transparent, Audio icon");
+            pp.setLineEnabled(false);
+            pp.setAltitudeMode(WorldWind.CLAMP_TO_GROUND);
+            PointPlacemarkAttributes attrs = new PointPlacemarkAttributes();
+            attrs.setImageAddress("gov/nasa/worldwindx/examples/images/audioicon-64.png");
+            attrs.setImageColor(new Color(1f, 1f, 1f, 0.6f));
+            attrs.setScale(0.6);
+//            attrs.setImageOffset(new Offset(19d, 8d, AVKey.PIXELS, AVKey.PIXELS));
+            attrs.setLabelOffset(new Offset(0.9d, 0.6d, AVKey.FRACTION, AVKey.FRACTION));
+            pp.setAttributes(attrs);
+            layer.addRenderable(pp);
+            
+            }
+
 </script>
 </body>
 </html>
